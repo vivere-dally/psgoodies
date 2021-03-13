@@ -4,7 +4,7 @@ function Step-GooSemVer {
         Increment or decrement a certain label from a SemVer string.
     .DESCRIPTION
         Increment or decrement a certain label from a SemVer string.
-        Tests if a given string is respects the Semantic Versioning guidelines, and throws an error if not.
+        Tests if the given Version respects the Semantic Versioning guidelines, and throws an error if not.
         If a Label that is not part of the Version is specified, the unaltered version is returned.
         This Cmdlet accepts values from the pipeline.
     .PARAMETER Version
