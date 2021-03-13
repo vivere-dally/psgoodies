@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) vivere-dally. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'PowerShell utility module for working with Semantic Version strings.'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -69,7 +69,7 @@ Copyright = '(c) vivere-dally. All rights reserved.'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Compare-GooSemVer', 'Step-GooSemVer', 'Test-GooSemVer')
+FunctionsToExport = @('Compare-GooSemVer', 'Select-GooSemVer', 'Set-GooSemVer', 'Step-GooSemVer', 'Test-GooSemVer')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -95,13 +95,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @('semver', '')
+        Tags = @('semver', 'semantic', 'version', 'vivere-dally')
 
         # A URL to the license for this module.
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = ''
 
         # A URL to an icon representing this module.
         # IconUri = ''
