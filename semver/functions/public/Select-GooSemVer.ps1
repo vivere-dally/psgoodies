@@ -6,23 +6,38 @@ function Select-GooSemVer {
         This cmdlet filters the SemVer strings by specifying a value for a certain label.
         Tests if the given Version respects the Semantic Versioning guidelines, and throws an error if not.
         This Cmdlet accepts values from the pipeline.
+    .PARAMETER Version
+        Version that will get filtered
+    .PARAMETER Identifier
+        Which Identifier to filter by
+        Valid choices: Major, Minor, Patch, Prerelease, Buildmetadata
+    .PARAMETER Value
+        Specifies the value to filter by
+    .PARAMETER Stable
+        Filters out the unstable versions. https://semver.org/#spec-item-9
     .EXAMPLE
         --- Example 1 Error cases ---
-        PS C:\> Select-GooSemVer -Version '1.-2.3' -Label Buildmetadata -Value 'build'
+        PS C:\> Select-GooSemVer -Version '1.-2.3' -Identifier Buildmetadata -Value 'build'
         
         The value 1.-2.3 is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid select operations ---
-        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Select-GooSemVer -Label Patch -Value 1
+        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Select-GooSemVer -Identifier Patch -Value 1
         
         0.0.1      
         0.1.1-alpha
         0.1.1+build
         0.1.1-alpha+build
-        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-GooSemVer -Label Prerelease -Value alpha
+        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-GooSemVer -Identifier Prerelease -Value alpha
 
         0.1.1-alpha
         0.1.1-alpha+build
+        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-GooSemVer -Stable
+
+        0.0.1
+        0.1.0
+        1.0.0
+        0.1.1+build
     .INPUTS
         System.String
 
@@ -35,20 +50,25 @@ function Select-GooSemVer {
         For more information about Semantic Versioning 2.0.0, see this: https://semver.org/
     #>
     [CmdletBinding()]
-    [OutputType([string])]
+    [OutputType([string], ParameterSetName = ('ByIdentifier', 'Stable'))]
     param (
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ParameterSetName = 'ByIdentifier')]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ParameterSetName = 'Stable')]
         [string]
         $Version,
 
-        [Parameter(Mandatory = $false, Position = 1)]
+        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ByIdentifier')]
         [ValidateSet('Major', 'Minor', 'Patch', 'Prerelease', 'Buildmetadata')]
         [string]
-        $Label = 'Patch',
+        $Identifier,
 
-        [Parameter(Mandatory = $true, Position = 2)]
+        [Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'ByIdentifier')]
         [string]
-        $Value
+        $Value,
+
+        [Parameter(Mandatory = $true, ParameterSetName = 'Stable')]
+        [switch]
+        $Stable
     )
 
     process {
@@ -56,6 +76,15 @@ function Select-GooSemVer {
             throw $Script:GooSemVer.InvalidVersionFormatMessage -f $Version
         }
 
-        if ($Matches.ContainsKey($Label) -and $Matches[$Label] -eq $Value) { return $Version }
+        if ($Stable) {
+            if (-not $Matches.Contains('prerelease')) {
+                return $Version
+            }
+        }
+        else {
+            if ($Matches.ContainsKey($Identifier) -and $Matches[$Identifier] -eq $Value) {
+                return $Version
+            }
+        }
     }
 }

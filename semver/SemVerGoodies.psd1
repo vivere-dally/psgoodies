@@ -12,7 +12,7 @@
 RootModule = "SemVerGoodies.psm1"
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) vivere-dally. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This module provides utility functions that work with [Semantic Versioning 2.0.0](https://semver.org/) strings.'
+Description = 'This module provides utility functions that work with Semantic Versioning 2.0.0: https://semver.org/ strings.'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -69,7 +69,7 @@ Description = 'This module provides utility functions that work with [Semantic V
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Compare-GooSemVer', 'Select-GooSemVer', 'Set-GooSemVer', 'Step-GooSemVer', 'Test-GooSemVer')
+FunctionsToExport = @('Compare-GooSemVer', 'ConvertFrom-GooSemVer', 'ConvertTo-GooSemVer', 'Reset-GooSemVer', 'Select-GooSemVer', 'Set-GooSemVer', 'Step-GooSemVer', 'Test-GooSemVer')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

@@ -1,120 +1,74 @@
 function Step-GooSemVer {
     <#
     .SYNOPSIS
-        Increment or decrement a certain label from a SemVer string.
+        Increment a certain identifier from a SemVer string.
     .DESCRIPTION
-        Increment or decrement a certain label from a SemVer string.
+        Increment a certain identifier from a SemVer string.
         Tests if the given Version respects the Semantic Versioning guidelines, and throws an error if not.
         If a Label that is not part of the Version is specified, the unaltered version is returned.
         This Cmdlet accepts values from the pipeline.
     .PARAMETER Version
         Version that will get stepped
-    .PARAMETER Label
-        Which label to step
+    .PARAMETER Identifier
+        Which Identifier to step
         Valid choices: Major, Minor, Patch, Prerelease, Buildmetadata
-    .PARAMETER Reverse
-        Switch that specifies wether to increment or decrement
     .EXAMPLE
         --- Example 1 Error case ---
-        PS C:\> Step-GooSemVer -Version '0.1.1-alpha++build' -Label Major
+        PS C:\> Step-GooSemVer -Version '0.1.1-alpha++build' -Identifier Major
         The value 0.1.1-alpha++build is not following the SemVer guidelines.
     .EXAMPLE
-        --- Example 2 Increment/Decrement Major ---
-        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Step-GooSemVer -Label Major
+        --- Example 2 Major ---
+        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Step-GooSemVer -Identifier Major
 
         1.0.0
         1.0.0
         1.0.0
         2.0.0
-        1.0.0-alpha
-        1.0.0+build
-        1.0.0-alpha+build
-        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Step-GooSemVer -Label Major -Reverse
-
         1.0.0
         1.0.0
         1.0.0
-        1.0.0
-        1.0.0-alpha
-        1.0.0+build
-        1.0.0-alpha+build
-        PS C:\> @('2.0.0', '2.2.2', '1.0.0-alpha', '3.0.0-alpha') | Step-GooSemVer -Label Major -Reverse
-
-        1.0.0
-        1.0.0
-        1.0.0-alpha
-        2.0.0-alpha
     .EXAMPLE
-        --- Example 3 Increment/Decrement Minor ---
-        PS C:\> Step-GooSemVer '1.2.3' Minor
+        --- Example 3 Minor ---
+        PS C:\> Step-GooSemVer -Version '1.2.3-alpha' Minor
 
         1.3.0
     .EXAMPLE
-        --- Example 4 Increment/Decrement Patch ---
-        PS C:\> Step-GooSemVer '1.2.3' Patch
+        --- Example 4 Patch ---
+        PS C:\> Step-GooSemVer -Version '1.2.3-alpha' Patch
 
         1.2.4
-        PS C:\> Step-GooSemVer '1.2.3'
+        PS C:\> '1.2.3' | Step-GooSemVer
 
         1.2.4
-        # Patch is the default label
+        # Patch is the default identifier
     .EXAMPLE
-        --- Example 5 Increment/Decrement Prerelease ---
-        PS C:\> Step-GooSemVer '1.2.3-alpha' Prerelease
+        --- Example 5 Prerelease ---
+        PS C:\> Step-GooSemVer -Version '1.2.3-alpha' Prerelease
 
         1.2.3-alpha.1
-        PS C:\> Step-GooSemVer '1.2.3-alpha' Prerelease
+        PS C:\> Step-GooSemVer -Version '1.2.3-alpha.1' Prerelease
 
-        1.2.3-alpha.1
-        PS C:\> Step-GooSemVer '1.2.3-alpha.1' Prerelease -Reverse
-
-        1.2.3-alpha
+        1.2.3-alpha.2
     .INPUTS
         System.String
 
         System.String
-
-        System.Boolean
     .OUTPUTS
         System.String
     .NOTES
         For more information about Semantic Versioning 2.0.0, see this: https://semver.org/
-        Have a look at the examples to see some interesting edge cases.
-
-        Incrementing a prerelease or build metadata label without a version will result in a version being added:
-            - 0.1.0-alpha -> 0.1.0-alpha.1
-            - 0.1.0+build -> 0.1.0+build.1
-
-        Decrementing is not clearly defined so there are a few caveat that you need to know:
-            Decrementing any of 1.0.0, 0.1.0, 0.0.1 will result in the same output, they won't get to 0.0.0.
-
-            - Major:
-                - 2.1.1 -> 1.0.0. It will reset the Minor and Patch.
-
-            - Minor:
-                - 2.1.2 -> 2.0.0. It will reset Patch.
-        
-            - Prerelease:
-                - 1.2.3-alpha.1 -> 1.2.3-alpha. The version and the dot will get stripped
-
-            - Buildmetadata:
-                - 1.2.3+build.1 -> 1.2.3+build. The version and the dot will get stripped
     #>
     [CmdletBinding()]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [string]
         $Version,
 
-        [Parameter(Mandatory = $false, Position = 1)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateSet('Major', 'Minor', 'Patch', 'Prerelease', 'Buildmetadata')]
         [string]
-        $Label = 'Patch',
-
-        [Parameter(Mandatory = $false, Position = 2)]
-        [switch]
-        $Reverse
+        $Identifier = 'Patch'
     )
 
     process {
@@ -122,7 +76,7 @@ function Step-GooSemVer {
             throw $Script:GooSemVer.InvalidVersionFormatMessage -f $Version
         }
 
-        if (-not ($Matches.ContainsKey($Label))) {
+        if (-not ($Matches.ContainsKey($Identifier))) {
             return $Version
         }
 
@@ -130,40 +84,34 @@ function Step-GooSemVer {
         # Remove the full match
         $versionTable.Remove(0)
 
-        [int] $step = if ($Reverse) { -1 } else { 1 }
-        if ($Label -in @('Major', 'Minor', 'Patch')) {
-            [int] $value = $versionTable[$Label]
-            switch ($Label) {
-                'Major' { $versionTable['Minor'] = 0; $versionTable['Patch'] = 0; }
-                'Minor' { $versionTable['Patch'] = 0; }
+        # https://semver.org/#spec-item-7 -> 10
+        if ($Identifier -in @('Major', 'Minor', 'Patch')) {
+            switch ($Identifier) {
+                'Major' { $versionTable['Minor'] = 0; $versionTable['Patch'] = 0; break; }
+                'Minor' { $versionTable['Patch'] = 0; break; }
             }
 
-            $value += $step
-
-            # https://semver.org/#spec-item-2
-            if ($value -lt 0) { $value = 0 }
-            $versionTable[$Label] = $value
-
-            # 1.0.0, 0.1.0, 0.0.1 =/> 0.0.0
-            if ($versionTable['Major'] -eq 0 -and $versionTable['Minor'] -eq 0 -and $versionTable['Patch'] -eq 0) { $versionTable[$Label] = 1 }
-            return New-GooSemVer @versionTable
+            $versionTable.Remove('prerelease')
+            $versionTable.Remove('buildmetadata')
+            [int] $value = $versionTable[$Identifier]
+            $value++
+            $versionTable[$Identifier] = $value
+            return $versionTable | ConvertTo-GooSemVer
         }
 
-        $value = $versionTable[$Label].Split('.')
-        $lastPart = $value | Select-Object -Last 1
-        if ($lastPart | isNumericIdentifier) {
-            $lastPart = ([int] $lastPart) + $step
-            if ($lastPart -le 0 -and $value.Length -ge 2) {
-                # Remove the last element. E.g.: 1.0.0-alpha.1 -> 1.0.0-alpha
-                $value = $value[0..($value.Length - 2)]
-            }
+        $value = $versionTable[$Identifier].Split('.')
+        $lastIdentifier = $value | Select-Object -Last 1
+        if ($lastIdentifier | isNumericIdentifier) {
+            # 1.0.0-alpha.1 -> 1.0.0-alpha.2
+            $lastIdentifier = ([int] $lastIdentifier) + 1
+            $value[$value.Count - 1] = $lastIdentifier
         }
-        elseif (-not $Reverse) {
-            # Add a version. E.g.: 1.0.0-alpha -> 1.0.0-alpha.1
-            $value += $step
+        else {
+            # 1.0.0-alpha -> 1.0.0-alpha.1
+            $value += 1
         }
 
-        $versionTable[$Label] = $value -join '.'
-        return New-GooSemVer @versionTable
+        $versionTable[$Identifier] = $value -join '.'
+        return $versionTable | ConvertTo-GooSemVer
     }
 }
