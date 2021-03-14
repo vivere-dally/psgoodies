@@ -1,30 +1,37 @@
 function Set-GooSemVer {
     <#
     .SYNOPSIS
-        Set labels in a SemVer string.
+        Set identifiers in a SemVer string.
     .DESCRIPTION
-        This Cmdlet sets the value for a specified part of a SemVer string.
+        This Cmdlet sets the value for a specified identifier of a SemVer string.
         Tests if the given Version respects the Semantic Versioning guidelines, and throws an error if not.
         If the resulting Version is invalid, an error is thrown.
         This Cmdlet accepts values from the pipeline.
+    .PARAMETER Version
+        Version that will get set
+    .PARAMETER Identifier
+        Which Identifier to step
+        Valid choices: Major, Minor, Patch, Prerelease, Buildmetadata
+    .PARAMETER Value
+        Specifies the new value
     .EXAMPLE
         --- Example 1 Error cases ---
-        PS C:\> Set-GooSemVer -Version '1.-2.3' -Label Buildmetadata -Value 'build'
+        PS C:\> Set-GooSemVer -Version '1.-2.3' -Identifier Buildmetadata -Value 'build'
         
         The value 1.-2.3 is not following the SemVer guidelines.
-        PS C:\> Set-GooSemVer -Version '1.2.3' -Label Buildmetadata -Value '==ahasda'
+        PS C:\> Set-GooSemVer -Version '1.2.3' -Identifier Buildmetadata -Value '==ahasda'
 
         The resulted Version is in an invalid state 1.2.3+==ahasda. The value ==ahasda is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid sets ---
-        PS C:\> Set-GooSemVer -Version '1.2.3' -Label Buildmetadata -Value 'build'
+        PS C:\> Set-GooSemVer -Version '1.2.3' -Identifier Buildmetadata -Value 'build'
         
         1.2.3+build
-        PS C:\> Set-GooSemVer -Version '1.2.3' -Label Major -Value '5'
+        PS C:\> Set-GooSemVer -Version '1.2.3' -Identifier Major -Value '5'
 
         5.2.3
 
-        PS C:\> @('1.2.3', '3.3.3-alpha', '1.0.0+build') | Set-GooSemVer -Label Minor -Value '0'
+        PS C:\> @('1.2.3', '3.3.3-alpha', '1.0.0+build') | Set-GooSemVer -Identifier Minor -Value '0'
 
         1.0.3
         3.0.3-alpha
@@ -43,16 +50,16 @@ function Set-GooSemVer {
     [CmdletBinding()]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [string]
         $Version,
 
-        [Parameter(Mandatory = $false, Position = 1)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateSet('Major', 'Minor', 'Patch', 'Prerelease', 'Buildmetadata')]
         [string]
-        $Label = 'Patch',
+        $Identifier = 'Patch',
 
-        [Parameter(Mandatory = $true, Position = 2)]
+        [Parameter(Mandatory = $true, Position = 1)]
         [string]
         $Value
     )
@@ -66,8 +73,8 @@ function Set-GooSemVer {
         # Remove the full match
         $versionTable.Remove(0)
 
-        $versionTable[$Label] = $Value
-        $newVersion = New-GooSemVer @versionTable
+        $versionTable[$Identifier] = $Value
+        $newVersion = $versionTable | ConvertTo-GooSemVer
         if (-not ($newVersion -match $Script:GooSemVer.Rex)) {
             throw $Script:GooSemVer.InvalidResultingVersionFormatMessage -f @($newVersion, $Value)
         }
