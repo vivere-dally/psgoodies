@@ -1,4 +1,4 @@
-function Get-GooLogMessage {
+function New-GooLogMessage {
     [CmdletBinding(DefaultParameterSetName = 'Separator')]
     [OutputType([string])]
     param (

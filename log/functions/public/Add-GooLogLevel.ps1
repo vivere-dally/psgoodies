@@ -5,6 +5,8 @@ function Add-GooLogLevel {
     .DESCRIPTION
         This cmdlet adds a new logging level that can be used by the Write-GooLog cmdlet.
         If the level already exist, the duplicate will not be added.
+    .PARAMETER Level
+        The name of the level that will be added
     .EXAMPLE
         -- Example 1 Add using named parameter ---
         PS C:\> Add-GooLogLevel -Level 'MyLevel1'
