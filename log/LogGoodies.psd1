@@ -12,7 +12,7 @@
 RootModule = 'LogGoodies.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.1.0-alpha'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) vivere-dally. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'This module provides utility functions used for logging. Includes support for ANSI colors.'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -69,7 +69,7 @@ Copyright = '(c) vivere-dally. All rights reserved.'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Add-GooLogLevel', 'Add-GooLogPath', 'Get-GooLogMessage', 'Reset-GooLogSettings', 'Set-GooLogDateFormat', 'Write-GooLog')
+FunctionsToExport = @('Add-GooLogLevel', 'Add-GooLogPath', 'New-GooLogMessage', 'Reset-GooLogSettings', 'Set-GooLogDateFormat', 'Write-GooLog')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -95,13 +95,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('log', 'logging', 'ansi', 'vivere-dally', 'psgoodies', 'goodies')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/vivere-dally/psgoodies/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/log'
 
         # A URL to an icon representing this module.
         # IconUri = ''
