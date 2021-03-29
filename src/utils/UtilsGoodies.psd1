@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) vivere-dally. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'This module provides utility random functions.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '7.1'
@@ -95,13 +95,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('utils', 'utility', 'vivere-dally', 'psgoodies', 'goodies')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/vivere-dally/psgoodies/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/src/utils'
 
         # A URL to an icon representing this module.
         # IconUri = ''
