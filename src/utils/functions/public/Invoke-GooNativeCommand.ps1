@@ -53,5 +53,3 @@ function Invoke-GooNativeCommand {
         throw $LASTEXITCODE
     }
 }
-
-'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1' -Verbose
