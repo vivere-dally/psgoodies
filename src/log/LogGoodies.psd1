@@ -12,7 +12,7 @@
 RootModule = 'LogGoodies.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0-alpha'
+ModuleVersion = "0.1.0"
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -33,7 +33,7 @@ Copyright = '(c) vivere-dally. All rights reserved.'
 Description = 'This module provides utility functions used for logging. Includes support for ANSI colors.'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '7.1'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
