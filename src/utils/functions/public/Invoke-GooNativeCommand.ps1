@@ -13,29 +13,28 @@ function Invoke-GooNativeCommand {
         PS C:\> Invoke-GooNativeCommand 'cmd.exe' -CommandArgs @('/c', 'exit 1')
     .EXAMPLE
         PS C:\> 'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1'
+    .EXAMPLE
+        PS C:\> { 1 + 1 } | Invoke-GooNativeCommand
+
+        2
     #>
     [CmdletBinding()]
     [OutputType()]
     param (
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0, ParameterSetName = 'StringCommand')]
-        [string]
-        $StringCommand,
-
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0, ParameterSetName = 'ScriptBlockCommand')]
-        [scriptblock]
-        $ScriptBlockCommand,
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
+        [ValidateScript( { $_ -is [string] -or $_ -is [scriptblock] })]
+        [object]
+        $Command,
         
-        [Parameter(Mandatory = $false, ParameterSetName = 'StringCommand')]
-        [Parameter(Mandatory = $false, ParameterSetName = 'ScriptBlockCommand')]
+        [Parameter(Mandatory = $false)]
         [array]
         $CommandArgs = @()
     )
 
-    $executable = ('StringCommand' -eq $PSCmdlet.ParameterSetName) ? $StringCommand : $ScriptBlockCommand
     $stopWatch = [Diagnostics.Stopwatch]::StartNew()
-    & $executable $CommandArgs
+    & $Command $CommandArgs
     $stopWatch.Stop()
-    "[Command   ] $($executable.ToString())" | Write-Verbose
+    "[Command   ] $($Command.ToString())" | Write-Verbose
     "[Arguments ] $($CommandArgs -join ' ')" | Write-Verbose
     "[Exit code ] $LASTEXITCODE" | Write-Verbose
     "[Total time] $($stopWatch.Elapsed.TotalSeconds) s" | Write-Verbose
