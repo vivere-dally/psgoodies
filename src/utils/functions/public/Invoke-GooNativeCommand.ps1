@@ -14,9 +14,18 @@ function Invoke-GooNativeCommand {
     .EXAMPLE
         PS C:\> 'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1'
     .EXAMPLE
+        PS C:\> 'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1'
+
+        VERBOSE: [Command   ] cmd.exe
+        VERBOSE: [Arguments ] /c exit 1
+        VERBOSE: [Exit code ] 1
+        VERBOSE: [Total time] 0.0236452 s
+    .EXAMPLE
         PS C:\> { 1 + 1 } | Invoke-GooNativeCommand
 
         2
+    .NOTES
+        This command is using the call operator (&) under the hood.
     #>
     [CmdletBinding()]
     [OutputType()]
@@ -38,7 +47,11 @@ function Invoke-GooNativeCommand {
     "[Arguments ] $($CommandArgs -join ' ')" | Write-Verbose
     "[Exit code ] $LASTEXITCODE" | Write-Verbose
     "[Total time] $($stopWatch.Elapsed.TotalSeconds) s" | Write-Verbose
-    if ($LASTEXITCODE -ne 0) {
+    
+    # A null/missing exit code is considered valid.
+    if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
         throw $LASTEXITCODE
     }
 }
+
+'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1' -Verbose
