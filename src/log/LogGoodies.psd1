@@ -12,7 +12,7 @@
 RootModule = 'LogGoodies.psm1'
 
 # Version number of this module.
-ModuleVersion = "0.1.0"
+ModuleVersion = "0.1.1"
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -101,7 +101,7 @@ PrivateData = @{
         LicenseUri = 'https://github.com/vivere-dally/psgoodies/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/log'
+        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/src/log'
 
         # A URL to an icon representing this module.
         # IconUri = ''
