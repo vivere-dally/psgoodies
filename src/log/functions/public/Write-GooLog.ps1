@@ -9,8 +9,8 @@ function Write-GooLog {
     [OutputType([string])]
     [OutputType($null)]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ParameterSetName = 'Default')]
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ParameterSetName = 'Color')]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ParameterSetName = 'Default')]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ParameterSetName = 'Color')]
         [AllowNull()]
         [AllowEmptyString()]
         [string]

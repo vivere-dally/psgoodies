@@ -37,11 +37,17 @@ function Invoke-GooNativeCommand {
         
         [Parameter(Mandatory = $false)]
         [array]
-        $CommandArgs = @()
+        $CommandArgs
     )
 
     $stopWatch = [Diagnostics.Stopwatch]::StartNew()
-    & $Command $CommandArgs
+    if ($CommandArgs) {
+        & $Command $CommandArgs
+    }
+    else {
+        & $Command
+    }
+
     $stopWatch.Stop()
     "[Command   ] $($Command.ToString())" | Write-Verbose
     "[Arguments ] $($CommandArgs -join ' ')" | Write-Verbose
