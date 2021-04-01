@@ -67,5 +67,3 @@ function ConvertTo-GooFlattenHashtable {
         return $root
     }
 }
-
-@{a = 0; b = @{c = 1; d = @{e = 2; f = @{g = 3; } } } } | ConvertTo-GooFlattenHashtable
