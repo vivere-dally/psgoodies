@@ -4,8 +4,8 @@ function ConvertTo-GooFlattenHashtable {
     [OutputType([hashtable])]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
-        [hashtable]
-        $Hashtable,
+        [psobject]
+        $InputObject,
 
         [Parameter(Mandatory = $false)]
         [uint]
@@ -13,11 +13,9 @@ function ConvertTo-GooFlattenHashtable {
     )
     begin {
         class __Item {
-            [int] $Depth;
             [string] $ParentKey;
             [hashtable] $Hashtable;
-            __Item([int] $depth, [string] $parentKey, [hashtable] $hashtable) {
-                $this.Depth = $depth
+            __Item([string] $parentKey, [hashtable] $hashtable) {
                 $this.ParentKey = $parentKey
                 $this.Hashtable = $hashtable
             }
@@ -27,39 +25,18 @@ function ConvertTo-GooFlattenHashtable {
     }
 
     process {
+        $ht = $InputObject | ConvertTo-GooHashtable -Depth $Depth
+        $q.Enqueue([__Item]::new('', $ht))
         $root = @{}
-        $Hashtable.Keys | ForEach-Object {
-            if ($Hashtable.$_ -is [hashtable]) {
-                $q.Enqueue([__Item]::new(1, $_, $Hashtable.$_))
-            }
-            else {
-                $root.$_ = $Hashtable.$_
-            }
-        }
-
-        $depthExceeded = $false
         while (0 -lt $q.Count) {
-            [__Item]$__it = $q.Dequeue()
-            if ($Depth -eq $__it.Depth) {
-                $__it.Hashtable.Keys | ForEach-Object {
-                    if ($__it.Hashtable.$_ -is [hashtable]) {
-                        if (-not $depthExceeded) {
-                            "Resulting HASHTABLE is truncated as serialization has exceeded the set depth of $Depth." | Write-Warning
-                        }
-        
-                        $depthExceeded = $true
-                    }
-                    $root.("$($__it.ParentKey).$_") = $__it.Hashtable.$_
+            [__Item]$__item = $q.Dequeue()
+            $__item.Hashtable.Keys | ForEach-Object {
+                $__key = ([string]::IsNullOrEmpty($__item.ParentKey)) ? $_ : "$($__item.ParentKey).$_"
+                if ($__item.Hashtable.$_ -is [hashtable]) {
+                    $q.Enqueue([__Item]::new($__key, $__item.Hashtable.$_))
                 }
-            }
-            else {
-                $__it.Hashtable.Keys | ForEach-Object {
-                    if ($__it.Hashtable.$_ -is [hashtable]) {
-                        $q.Enqueue([__Item]::new($__it.Depth + 1, "$($__it.ParentKey).$_", $__it.Hashtable.$_))
-                    }
-                    else {
-                        $root.("$($__it.ParentKey).$_") = $__it.Hashtable.$_
-                    }
+                else {
+                    $root[$__key] = $__item.Hashtable.$_
                 }
             }
         }
