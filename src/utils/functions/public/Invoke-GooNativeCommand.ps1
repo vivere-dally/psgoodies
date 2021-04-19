@@ -56,6 +56,6 @@ function Invoke-GooNativeCommand {
     
     # A null/missing exit code is considered valid.
     if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
-        throw $LASTEXITCODE
+        Write-Error $LASTEXITCODE
     }
 }
