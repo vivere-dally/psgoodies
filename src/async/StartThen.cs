@@ -1,12 +1,12 @@
-using System;
 using System.Management.Automation;
 using System.Threading.Tasks;
 using PSGoodies.Async.Model;
 
 namespace PSGoodies.Async
 {
-  [Cmdlet(VerbsCommon.New, "Then")]
-  public class Then : PSCmdlet
+  [Cmdlet(VerbsLifecycle.Start, "gThen")]
+  [OutputType(typeof(Promise))]
+  public class StartThen : PSCmdlet
   {
     [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
     public Promise Promise { get; set; }
@@ -16,19 +16,18 @@ namespace PSGoodies.Async
 
     protected override void ProcessRecord()
     {
-      try
-      {
-        WriteObject(new Promise(Execute()));
+      var concretePromise = (ConcretePromise) Promise;
+      if (concretePromise.GetTask().IsFaulted) {
+        WriteObject(Promise);
       }
-      catch (Exception exception)
-      {
-        
-      }
+
+      concretePromise = new ConcretePromise(this.Resolve());
+      WriteObject((Promise) concretePromise);
     }
 
-    private async Task<System.Collections.ObjectModel.Collection<PSObject>> Execute()
+    private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()
     {
-      System.Collections.ObjectModel.Collection<PSObject> result = await Promise.Task;
+      System.Collections.ObjectModel.Collection<PSObject> result = await ((ConcretePromise) Promise).GetTask();
       PSObject[] resultArray = new PSObject[result.Count];
       for (int i = 0; i < result.Count; i++)
       {

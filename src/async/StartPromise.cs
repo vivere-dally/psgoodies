@@ -4,8 +4,9 @@ using PSGoodies.Async.Model;
 
 namespace PSGoodies.Async
 {
-  [Cmdlet(VerbsCommon.New, "GooPromise")]
-  public class NewPromise : PSCmdlet
+  [Cmdlet(VerbsLifecycle.Start, "gPromise")]
+  [OutputType(typeof(Promise))]
+  public class StartPromise : PSCmdlet
   {
     [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
     public ScriptBlock ScriptBlock { get; set; }
@@ -21,7 +22,7 @@ namespace PSGoodies.Async
       });
 
       task.Start();
-      WriteObject(new Promise(task));
+      WriteObject(new ConcretePromise(task));
     }
   }
 }
