@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace PSGoodies.Async.Model
 {
-  public abstract class Promise
+  public class Promise
   {
-    protected Task<System.Collections.ObjectModel.Collection<PSObject>> Task { get; private set; }
+    public Task<System.Collections.ObjectModel.Collection<PSObject>> Task { get; private set; }
 
     public Promise(Task<System.Collections.ObjectModel.Collection<PSObject>> task)
     {
