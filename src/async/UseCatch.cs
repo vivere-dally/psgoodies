@@ -19,21 +19,20 @@ namespace PSGoodies.Async
 
     protected override void ProcessRecord()
     {
-      WriteWarning("UseCatch - enter");
-      if (!Promise.Task.IsFaulted)
-      {
-        WriteWarning("UseCatch - not faulted");
-        WriteObject(Promise);
-        return;
-      }
+      WriteObject(new Promise(this.Resolve()));
+    }
 
-      WriteWarning("UseCatch");
-      var promise = new Promise(Task.Run<System.Collections.ObjectModel.Collection<PSObject>>(() =>
+    private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()
+    {
+      try
       {
-        return ScriptBlock.Invoke(Promise.Task.Exception);
-      }));
-      WriteWarning("UseCatch - exit");
-      WriteObject(promise);
+        var result = await Promise.Task;
+        return result;
+      }
+      catch (System.Exception exception)
+      {
+        return ScriptBlock.Invoke(exception);
+      }
     }
   }
 }

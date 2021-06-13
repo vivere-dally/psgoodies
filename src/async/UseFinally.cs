@@ -19,7 +19,6 @@ namespace PSGoodies.Async
 
     protected override void ProcessRecord()
     {
-      WriteWarning("UseFinally");
       WriteObject(new Promise(Resolve()));
     }
 
@@ -35,8 +34,11 @@ namespace PSGoodies.Async
         result = new System.Collections.ObjectModel.Collection<PSObject>();
         result.Add(new PSObject(new ErrorRecord(exception, exception.Source, ErrorCategory.InvalidOperation, Promise)));
       }
+      finally
+      {
+        ScriptBlock.Invoke();
+      }
 
-      ScriptBlock.Invoke();
       return result;
     }
   }

@@ -19,28 +19,26 @@ namespace PSGoodies.Async
 
     protected override void ProcessRecord()
     {
-      WriteWarning("UseThen - enter");
-      if (Promise.Task.IsFaulted)
-      {
-        WriteWarning("UseThen - faulted");
-        WriteObject(Promise);
-        return;
-      }
-
-      WriteWarning("UseThen - exit");
       WriteObject(new Promise(this.Resolve()));
     }
 
     private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()
     {
-      System.Collections.ObjectModel.Collection<PSObject> result = await Promise.Task;
-      PSObject[] resultArray = new PSObject[result.Count];
-      for (int i = 0; i < result.Count; i++)
+      try
       {
-        resultArray[i] = result[i];
-      }
+        System.Collections.ObjectModel.Collection<PSObject> result = await Promise.Task;
+        PSObject[] resultArray = new PSObject[result.Count];
+        for (int i = 0; i < result.Count; i++)
+        {
+          resultArray[i] = result[i];
+        }
 
-      return ScriptBlock.Invoke(resultArray);
+        return ScriptBlock.Invoke(resultArray);
+      }
+      catch (System.Exception exception)
+      {
+        throw exception;
+      }
     }
   }
 }
