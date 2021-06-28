@@ -4,8 +4,8 @@ using PSGoodies.Async.Model;
 
 namespace PSGoodies.Async
 {
-  [Cmdlet(VerbsLifecycle.Complete, "gFinally")]
-  [Alias("Wait")]
+  [Cmdlet(VerbsLifecycle.Complete, "gPromise")]
+  [Alias("Complete", "gComplete")]
   [OutputType(typeof(Promise))]
   public class CompletePromise : PSCmdlet
   {
@@ -21,7 +21,7 @@ namespace PSGoodies.Async
       }
       catch (System.Exception exception)
       {
-        WriteError(new ErrorRecord(exception, exception.Source, ErrorCategory.InvalidOperation, Promise));
+        WriteError(new ErrorRecord(exception, System.Guid.NewGuid().ToString(), ErrorCategory.InvalidOperation, Promise));
       }
     }
   }

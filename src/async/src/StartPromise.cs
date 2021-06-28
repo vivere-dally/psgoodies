@@ -5,7 +5,7 @@ using PSGoodies.Async.Model;
 namespace PSGoodies.Async
 {
   [Cmdlet(VerbsLifecycle.Start, "gPromise", DefaultParameterSetName = "Pipe")]
-  [Alias("Promise")]
+  [Alias("Promise", "gPromise")]
   [OutputType(typeof(Promise))]
   public class StartPromise : PSCmdlet
   {

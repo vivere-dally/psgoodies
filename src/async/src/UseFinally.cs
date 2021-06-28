@@ -4,10 +4,10 @@ using PSGoodies.Async.Model;
 
 namespace PSGoodies.Async
 {
-  [Cmdlet(VerbsOther.Use, "gCatch", DefaultParameterSetName = "Pipe")]
-  [Alias("Catch")]
+  [Cmdlet(VerbsOther.Use, "gFinally", DefaultParameterSetName = "Pipe")]
+  [Alias("Finally", "gFinally")]
   [OutputType(typeof(Promise))]
-  public class UseCatch : PSCmdlet
+  public class UseFinally : PSCmdlet
   {
     [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "Pipe")]
     [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Position")]
@@ -19,20 +19,27 @@ namespace PSGoodies.Async
 
     protected override void ProcessRecord()
     {
-      WriteObject(new Promise(this.Resolve()));
+      WriteObject(new Promise(Resolve()));
     }
 
     private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()
     {
+      System.Collections.ObjectModel.Collection<PSObject> result = null;
       try
       {
-        var result = await Promise.Task;
-        return result;
+        result = await Promise.Task;
       }
       catch (System.Exception exception)
       {
-        return ScriptBlock.Invoke(exception);
+        result = new System.Collections.ObjectModel.Collection<PSObject>();
+        result.Add(new PSObject(new ErrorRecord(exception, exception.Source, ErrorCategory.InvalidOperation, Promise)));
       }
+      finally
+      {
+        ScriptBlock.Invoke();
+      }
+
+      return result;
     }
   }
 }

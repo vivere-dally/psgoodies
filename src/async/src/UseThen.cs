@@ -5,7 +5,7 @@ using PSGoodies.Async.Model;
 namespace PSGoodies.Async
 {
   [Cmdlet(VerbsOther.Use, "gThen", DefaultParameterSetName = "Pipe")]
-  [Alias("Then")]
+  [Alias("Then", "gThen")]
   [OutputType(typeof(Promise))]
   public class UseThen : PSCmdlet
   {
@@ -24,21 +24,14 @@ namespace PSGoodies.Async
 
     private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()
     {
-      try
+      System.Collections.ObjectModel.Collection<PSObject> result = await Promise.Task;
+      PSObject[] resultArray = new PSObject[result.Count];
+      for (int i = 0; i < result.Count; i++)
       {
-        System.Collections.ObjectModel.Collection<PSObject> result = await Promise.Task;
-        PSObject[] resultArray = new PSObject[result.Count];
-        for (int i = 0; i < result.Count; i++)
-        {
-          resultArray[i] = result[i];
-        }
+        resultArray[i] = result[i];
+      }
 
-        return ScriptBlock.Invoke(resultArray);
-      }
-      catch (System.Exception exception)
-      {
-        throw exception;
-      }
+      return ScriptBlock.Invoke(resultArray);
     }
   }
 }
