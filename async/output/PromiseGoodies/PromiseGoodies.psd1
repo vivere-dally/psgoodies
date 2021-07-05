@@ -12,10 +12,10 @@
 RootModule = 'PromiseGoodies.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '1.0.0'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('Core', 'Desktop')
 
 # ID used to uniquely identify this module
 GUID = 'bfa69d55-81de-42b4-ab5e-0f0f4605e411'
@@ -24,16 +24,16 @@ GUID = 'bfa69d55-81de-42b4-ab5e-0f0f4605e411'
 Author = 'vivere-dally'
 
 # Company or vendor of this module
-CompanyName = 'Unknown'
+CompanyName = 'vivere-dally'
 
 # Copyright statement for this module
 Copyright = '(c) vivere-dally. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Promise like behaviour'
+Description = 'Promise like behaviour in PowerShell'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '5.1'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -69,16 +69,22 @@ Description = 'Promise like behaviour'
 NestedModules = @('bin\PromiseGoodies.dll')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = '*'
+FunctionsToExport = @()
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = '*'
+CmdletsToExport = @('Complete-gPromise', 'Start-gPromise', 'Use-gCatch', 'Use-gFinally', 'Use-gThen')
 
 # Variables to export from this module
 VariablesToExport = '*'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = '*'
+AliasesToExport = @(
+    'Complete-Promise', 'Complete', 'gComplete',
+    'Start-Promise', 'Promise', 'gPromise',
+    'Use-Catch', 'Catch', 'gCatch',
+    'Use-Finally', 'Finally', 'gFinally',
+    'Use-Then', 'Then', 'gThen'
+)
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -95,13 +101,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('vivere-dally', 'promise', 'async', 'await', 'psgoodies', 'goodies')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/vivere-dally/psgoodies/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/async'
 
         # A URL to an icon representing this module.
         # IconUri = ''

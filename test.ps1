@@ -17,3 +17,5 @@ $config.Run.Path = $Path
 $config.Run.Exit.Value = $true
 
 Invoke-Pester -Configuration $config
+
+#Requires -Module @{ ModuleName = 'Pester'; RequiredVersion = '5.1.1' }

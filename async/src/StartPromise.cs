@@ -7,6 +7,7 @@ namespace PSGoodies.Async
   /// <summary>
   ///   <para type="synopsis">Start a Promise.</para>
   ///   <para type="description">The Start-gPromise cmdlet starts a Promise by using a given ScriptBlock.</para>
+  ///   <para type="link" uri="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">The JavaScript Promise.</para>
   /// </summary>
   /// <example>
   ///   <code>PS C:\> Start-gPromise { Invoke-WebRequest -Uri 'your_uri' } </code>
