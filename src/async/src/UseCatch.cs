@@ -5,7 +5,7 @@ using PSGoodies.Async.Model;
 namespace PSGoodies.Async
 {
   [Cmdlet(VerbsOther.Use, "gCatch", DefaultParameterSetName = "Pipe")]
-  [Alias("Catch", "gCatch")]
+  [Alias("Use-Catch" , "Catch", "gCatch")]
   [OutputType(typeof(Promise))]
   public class UseCatch : PSCmdlet
   {

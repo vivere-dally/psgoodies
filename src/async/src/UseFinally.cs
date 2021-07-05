@@ -5,7 +5,7 @@ using PSGoodies.Async.Model;
 namespace PSGoodies.Async
 {
   [Cmdlet(VerbsOther.Use, "gFinally", DefaultParameterSetName = "Pipe")]
-  [Alias("Finally", "gFinally")]
+  [Alias("Use-Finally", "Finally", "gFinally")]
   [OutputType(typeof(Promise))]
   public class UseFinally : PSCmdlet
   {

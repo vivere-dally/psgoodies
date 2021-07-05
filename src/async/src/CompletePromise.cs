@@ -5,7 +5,7 @@ using PSGoodies.Async.Model;
 namespace PSGoodies.Async
 {
   [Cmdlet(VerbsLifecycle.Complete, "gPromise")]
-  [Alias("Complete", "gComplete")]
+  [Alias("Complete-Promise", "Complete", "gComplete")]
   [OutputType(typeof(Promise))]
   public class CompletePromise : PSCmdlet
   {

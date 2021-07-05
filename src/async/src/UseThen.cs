@@ -5,7 +5,7 @@ using PSGoodies.Async.Model;
 namespace PSGoodies.Async
 {
   [Cmdlet(VerbsOther.Use, "gThen", DefaultParameterSetName = "Pipe")]
-  [Alias("Then", "gThen")]
+  [Alias("Use-Then", "Then", "gThen")]
   [OutputType(typeof(Promise))]
   public class UseThen : PSCmdlet
   {
