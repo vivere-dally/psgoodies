@@ -1,5 +1,5 @@
 
-Describe 'ConvertTo-GooFlattenHashtable' {
+Describe 'ConvertTo-gFlattenHashtable' {
 
     It 'Convert simple object' {
         # Arrange
@@ -13,7 +13,7 @@ Describe 'ConvertTo-GooFlattenHashtable' {
         $pso = [PSCustomObject]$expected
 
         # Act
-        $actual = $pso | ConvertTo-GooFlattenHashtable
+        $actual = $pso | ConvertTo-gFlattenHashtable
         $eqs = $actual | Compare-Object -ReferenceObject $expected -Property a, b, c, d -IncludeEqual -CaseSensitive | Select-Object -ExpandProperty SideIndicator
 
         # Assert
@@ -41,7 +41,7 @@ Describe 'ConvertTo-GooFlattenHashtable' {
                     f = 2;
                     g = 3;
                 }
-            }) | ConvertTo-GooFlattenHashtable
+            }) | ConvertTo-gFlattenHashtable
         $eqs = $actual | Compare-Object -ReferenceObject $expected -Property a, b, c, d, 'e.f', 'e.g' -IncludeEqual -CaseSensitive | Select-Object -ExpandProperty SideIndicator
         
         # Assert
@@ -75,7 +75,7 @@ Describe 'ConvertTo-GooFlattenHashtable' {
                         j = '123.123';
                     }
                 }
-            }) | ConvertTo-GooFlattenHashtable
+            }) | ConvertTo-gFlattenHashtable
         $eqs = $actual | Compare-Object -ReferenceObject $expected -Property a, b, c, d, 'e.f', 'e.g', 'e.h.i', 'e.h.j' -IncludeEqual -CaseSensitive | Select-Object -ExpandProperty SideIndicator
 
         # Assert

@@ -69,7 +69,7 @@ PowerShellVersion = '7.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Add-GooLogLevel', 'Add-GooLogPath', 'New-GooLogMessage', 'Reset-GooLogSettings', 'Set-GooLogDateFormat', 'Write-GooLog')
+FunctionsToExport = @('Add-gLogLevel', 'Add-gLogPath', 'New-gLogMessage', 'Reset-gLogSettings', 'Set-gLogDateFormat', 'Write-gLog')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

@@ -1,5 +1,5 @@
 
-function ConvertTo-GooHashtable {
+function ConvertTo-gHashtable {
     [CmdletBinding()]
     [OutputType([hashtable])]
     param (

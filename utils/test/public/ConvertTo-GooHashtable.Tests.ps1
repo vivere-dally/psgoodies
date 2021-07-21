@@ -1,5 +1,5 @@
 
-Describe 'ConvertTo-GooHashtable' {
+Describe 'ConvertTo-gHashtable' {
 
     It 'Convert simple object' {
         # Arrange
@@ -13,7 +13,7 @@ Describe 'ConvertTo-GooHashtable' {
         $pso = [PSCustomObject]$expected
 
         # Act
-        $actual = $pso | ConvertTo-GooHashtable
+        $actual = $pso | ConvertTo-gHashtable
         $eqs = $actual | Compare-Object -ReferenceObject $expected -Property a, b, c, d -IncludeEqual -CaseSensitive | Select-Object -ExpandProperty SideIndicator
 
         # Assert
@@ -45,7 +45,7 @@ Describe 'ConvertTo-GooHashtable' {
         }
         
         # Act
-        $actual = $pso | ConvertTo-GooHashtable
+        $actual = $pso | ConvertTo-gHashtable
         $eqs = $actual | Compare-Object -ReferenceObject $expected -Property a, b, c, d, e, f, g -IncludeEqual -CaseSensitive | Select-Object -ExpandProperty SideIndicator
         
         # Assert
@@ -85,7 +85,7 @@ Describe 'ConvertTo-GooHashtable' {
         }
         
         # Act
-        $actual = $pso | ConvertTo-GooHashtable
+        $actual = $pso | ConvertTo-gHashtable
         $eqs = $actual | Compare-Object -ReferenceObject $expected -Property a, b, c, d, e, f, g, h, i, j -IncludeEqual -CaseSensitive | Select-Object -ExpandProperty SideIndicator
         
         # Assert

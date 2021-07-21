@@ -10,6 +10,25 @@ foreach ($function in ($local:publicfunctions + @(Get-ChildItem -Path "$PSScript
     }
 }
 
+New-Variable -Name DefaultLevels -Option Constant -Scope Script -Value @{
+    INFO    = $null;
+    WARNING = [System.ConsoleColor]::Yellow;
+    ERROR   = [System.ConsoleColor]::Red;
+}
+
+New-Variable -Name Ansi -Option Constant -Scope Script -Value @{
+    Colors   = @(30, 34, 32, 36, 31, 35, 33, 37, 90, 94, 92, 96, 91, 95, 93, 97);
+    Template = "`e[{0}m{1}`e[{2}m";
+}
+
+New-Variable -Name DefaultDate -Option Constant -Scope Script -Value @{
+    Format = 'G';
+    AsUTC  = $true;
+}
+
+$Script:Levels = $Script:DefaultLevels
+$Script:Date = $Script:DefaultDate
+
 New-Variable `
     -Name 'GooLog' `
     -Scope Script `
@@ -29,5 +48,5 @@ New-Variable `
     -Description @"
 "@
 
-$global:GooLogAnsiPreference = 'Unset'
+$Global:gLogAnsiPreference = 'Unset'
 Export-ModuleMember -Function $local:publicfunctions.BaseName

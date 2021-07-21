@@ -1,4 +1,4 @@
-function ConvertTo-GooSemVer {
+function ConvertTo-gSemVer {
     <#
     .SYNOPSIS
         Convert identifiers to a SemVer string.
@@ -8,28 +8,28 @@ function ConvertTo-GooSemVer {
         This Cmdlet accepts values from the pipeline.
     .EXAMPLE
         --- Example 1 Error case ---
-        PS C:\> ConvertTo-GooSemVer -Major 1 -Minor 2 -Patch 'abc'
+        PS C:\> ConvertTo-gSemVer -Major 1 -Minor 2 -Patch 'abc'
 
         The value 1.2.abc is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 By Identifier ---
-        PS C:\> ConvertTo-GooSemVer -Major 1 -Minor 2 -Patch 3 -Prerelease 'alpha' -Buildmetadata 'build'
+        PS C:\> ConvertTo-gSemVer -Major 1 -Minor 2 -Patch 3 -Prerelease 'alpha' -Buildmetadata 'build'
 
         1.2.3-alpha+build
     .EXAMPLE
         --- Example 3 By Splatting ---
         PS C:\> $version = @{ Major = 1; Minor = 2; Patch = 3; Prerelease = 'alpha'; Buildmetadata = 'build' }
-        PS C:\> ConvertTo-GooSemVer @version
+        PS C:\> ConvertTo-gSemVer @version
 
         1.2.3-alpha+build
     .EXAMPLE
         --- Example 4 By Pipeline ---
         PS C:\> $version = @{ Major = 1; Minor = 2; Patch = 3; Prerelease = 'alpha'; Buildmetadata = 'build' }
-        PS C:\> $version | ConvertTo-GooSemVer
+        PS C:\> $version | ConvertTo-gSemVer
 
         1.2.3-alpha+build
         PS C:\> $version = [PSCustomObject] $version
-        PS C:\> $version | ConvertTo-GooSemVer
+        PS C:\> $version | ConvertTo-gSemVer
 
         1.2.3-alpha+build
     .INPUTS
@@ -81,7 +81,7 @@ function ConvertTo-GooSemVer {
                 $InputObject = $InputObject | ConvertTo-Json | ConvertFrom-Json -AsHashtable
             }
 
-            return ConvertTo-GooSemVer @InputObject
+            return ConvertTo-gSemVer @InputObject
         }
 
         $value = "$Major.$Minor.$Patch"

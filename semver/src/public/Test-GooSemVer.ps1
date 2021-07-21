@@ -1,4 +1,4 @@
-function Test-GooSemVer {
+function Test-gSemVer {
     <#
     .SYNOPSIS
         Test if a given string is a valid SemVer.
@@ -9,10 +9,10 @@ function Test-GooSemVer {
         Version that will get tested
     .EXAMPLE
         --- Example 1 Test valid versions ---
-        PS C:\> @('1.0.0', '0.1.0', '0.0.1', '0.1.0-alpha', '0.1.0+build', '1.2.3-alpha+build') | Test-GooSemVer
+        PS C:\> @('1.0.0', '0.1.0', '0.0.1', '0.1.0-alpha', '0.1.0+build', '1.2.3-alpha+build') | Test-gSemVer
     .EXAMPLE
         --- Example 2 Test invalid versions ---
-        PS C:\> @('-1.0.0', '0,1,0', '0.0.1=alpha', '0.1.0-alpha.1,2', '0.1.0+build.3,3', '1.2.3-alpha++build') | Test-GooSemVer
+        PS C:\> @('-1.0.0', '0,1,0', '0.0.1=alpha', '0.1.0-alpha.1,2', '0.1.0+build.3,3', '1.2.3-alpha++build') | Test-gSemVer
     .INPUTS
         System.String
     .OUTPUTS

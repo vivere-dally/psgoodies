@@ -1,4 +1,4 @@
-function ConvertFrom-GooSemVer {
+function ConvertFrom-gSemVer {
     <#
     .SYNOPSIS
         Convert a SemVer string to identifiers.
@@ -8,19 +8,19 @@ function ConvertFrom-GooSemVer {
         This Cmdlet accepts values from the pipeline.
     .EXAMPLE
         --- Example 1 Error case ---
-        PS C:\> '1.2.abc' | ConvertFrom-GooSemVer
+        PS C:\> '1.2.abc' | ConvertFrom-gSemVer
 
         The value 1.2.abc is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid input ---
-        PS C:\> ConvertFrom-GooSemVer '1.2.3-alpha+beta'
+        PS C:\> ConvertFrom-gSemVer '1.2.3-alpha+beta'
 
         prerelease    : alpha
         buildmetadata : beta
         minor         : 2
         major         : 1
         patch         : 3
-        PS C:\> ConvertFrom-GooSemVer '1.2.3-alpha+beta' -AsHashtable
+        PS C:\> ConvertFrom-gSemVer '1.2.3-alpha+beta' -AsHashtable
 
         Name                           Value
         ----                           -----
@@ -31,14 +31,14 @@ function ConvertFrom-GooSemVer {
         patch                          3
     .EXAMPLE
         --- Example 3 Valid input by pipeline ---
-        PS C:\> '1.2.3-alpha+beta' | ConvertFrom-GooSemVer
+        PS C:\> '1.2.3-alpha+beta' | ConvertFrom-gSemVer
 
         prerelease    : alpha
         buildmetadata : beta
         minor         : 2
         major         : 1
         patch         : 3
-        PS C:\> '1.2.3-alpha+beta' | ConvertFrom-GooSemVer -AsHashtable
+        PS C:\> '1.2.3-alpha+beta' | ConvertFrom-gSemVer -AsHashtable
 
         Name                           Value
         ----                           -----

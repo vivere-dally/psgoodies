@@ -1,4 +1,4 @@
-function Select-GooSemVer {
+function Select-gSemVer {
     <#
     .SYNOPSIS
         Selects SemVer strings.
@@ -17,22 +17,22 @@ function Select-GooSemVer {
         Filters out the unstable versions. https://semver.org/#spec-item-9
     .EXAMPLE
         --- Example 1 Error cases ---
-        PS C:\> Select-GooSemVer -Version '1.-2.3' -Identifier Buildmetadata -Value 'build'
+        PS C:\> Select-gSemVer -Version '1.-2.3' -Identifier Buildmetadata -Value 'build'
         
         The value 1.-2.3 is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid select operations ---
-        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Select-GooSemVer -Identifier Patch -Value 1
+        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Select-gSemVer -Identifier Patch -Value 1
         
         0.0.1      
         0.1.1-alpha
         0.1.1+build
         0.1.1-alpha+build
-        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-GooSemVer -Identifier Prerelease -Value alpha
+        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-gSemVer -Identifier Prerelease -Value alpha
 
         0.1.1-alpha
         0.1.1-alpha+build
-        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-GooSemVer -Stable
+        PS C:\> @('0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build', '1.2.3-beta') | Select-gSemVer -Stable
 
         0.0.1
         0.1.0

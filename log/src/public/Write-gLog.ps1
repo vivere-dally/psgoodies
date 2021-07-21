@@ -4,7 +4,7 @@ class GooLogValidLevels : System.Management.Automation.IValidateSetValuesGenerat
     }
 }
 
-function Write-GooLog {
+function Write-gLog {
     [CmdletBinding(DefaultParameterSetName = 'Default')]
     [OutputType([string])]
     [OutputType($null)]
@@ -75,7 +75,7 @@ function Write-GooLog {
         }
 
         if ('Color' -eq $PSCmdlet.ParameterSetName) {
-            if (Test-GooLogAnsi $Ansi) {
+            if (Test-gLogAnsi $Ansi) {
                 if ($BackgroundColor) {
                     $__message = $Script:GooLog.Ansi.Template -f ($Script:GooLog.Ansi.Colors[$BackgroundColor.value__] + 10), $__message, 49
                 }

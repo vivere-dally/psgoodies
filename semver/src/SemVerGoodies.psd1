@@ -69,7 +69,7 @@ Description = 'This module provides utility functions that work with Semantic Ve
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Compare-GooSemVer', 'ConvertFrom-GooSemVer', 'ConvertTo-GooSemVer', 'Reset-GooSemVer', 'Select-GooSemVer', 'Set-GooSemVer', 'Step-GooSemVer', 'Test-GooSemVer')
+FunctionsToExport = @('Compare-gSemVer', 'ConvertFrom-gSemVer', 'ConvertTo-gSemVer', 'Reset-gSemVer', 'Select-gSemVer', 'Set-gSemVer', 'Step-gSemVer', 'Test-gSemVer')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

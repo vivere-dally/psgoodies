@@ -21,25 +21,34 @@ namespace PSGoodies.Async
     /// <summary>
     /// <para type="description">The ScriptBlock that will be ran asynchronously.</para>
     /// </summary>
-    [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "Pipe")]
-    [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Position")]
+    // [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Pipe")]
+    // [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Position")]
+    [Parameter(Mandatory = true)]
     public ScriptBlock ScriptBlock { get; set; }
 
     /// <summary>
     /// <para type="description">Array of arguments that will be passed to the ScriptBlock.</para>
     /// </summary>
-    [Parameter(Position = 0, ParameterSetName = "Pipe")]
-    [Parameter(Position = 1, ParameterSetName = "Position")]
+    // [Parameter(ValueFromPipeline = true, ParameterSetName = "Pipe")]
+    // [Parameter(Position = 1, ParameterSetName = "Position")]
+    [Parameter()]
     public PSObject[] ArgumentList { get; set; } = new PSObject[0];
 
     protected override void ProcessRecord()
     {
-      var task = Task.Run<System.Collections.ObjectModel.Collection<PSObject>>(() =>
+      WriteVerbose("START");
+      WriteObject(new Promise(Resolve()));
+      WriteVerbose("END");
+    }
+
+    private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()
+    {
+      var result = await Task.Run<System.Collections.ObjectModel.Collection<PSObject>>(() =>
       {
         return ScriptBlock.Invoke(ArgumentList);
       });
 
-      WriteObject(new Promise(task));
+      return result;
     }
   }
 }

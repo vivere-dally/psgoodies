@@ -1,4 +1,4 @@
-function Invoke-GooNativeCommand {
+function Invoke-gNativeCommand {
     <#
     .SYNOPSIS
         Invoke a command
@@ -10,18 +10,18 @@ function Invoke-GooNativeCommand {
     .PARAMETER CommandArgs
         Arguments that will get passed to the command
     .EXAMPLE
-        PS C:\> Invoke-GooNativeCommand 'cmd.exe' -CommandArgs @('/c', 'exit 1')
+        PS C:\> Invoke-gNativeCommand 'cmd.exe' -CommandArgs @('/c', 'exit 1')
     .EXAMPLE
-        PS C:\> 'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1'
+        PS C:\> 'cmd.exe' | Invoke-gNativeCommand -CommandArgs '/c', 'exit 1'
     .EXAMPLE
-        PS C:\> 'cmd.exe' | Invoke-GooNativeCommand -CommandArgs '/c', 'exit 1'
+        PS C:\> 'cmd.exe' | Invoke-gNativeCommand -CommandArgs '/c', 'exit 1'
 
         VERBOSE: [Command   ] cmd.exe
         VERBOSE: [Arguments ] /c exit 1
         VERBOSE: [Exit code ] 1
         VERBOSE: [Total time] 0.0236452 s
     .EXAMPLE
-        PS C:\> { 1 + 1 } | Invoke-GooNativeCommand
+        PS C:\> { 1 + 1 } | Invoke-gNativeCommand
 
         2
     .NOTES

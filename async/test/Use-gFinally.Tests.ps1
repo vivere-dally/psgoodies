@@ -11,8 +11,7 @@ Describe "Use-gFinally" {
     It "executed" {
         $var = $false
 
-        { } `
-        | Start-gPromise `
+        Start-gPromise { } `
         | Use-gFinally { ([ref]$var).Value = $true } `
         | Complete-gPromise `
 
@@ -22,8 +21,7 @@ Describe "Use-gFinally" {
     It "executed_then" {
         $var = $false
 
-        { } `
-        | Start-gPromise `
+        Start-gPromise { } `
         | Use-gThen { } `
         | Use-gFinally { ([ref]$var).Value = $true } `
         | Complete-gPromise
@@ -34,8 +32,7 @@ Describe "Use-gFinally" {
     It "executed_catch" {
         $var = $false
 
-        { throw } `
-        | Start-gPromise `
+        Start-gPromise { throw } `
         | Use-gCatch { } `
         | Use-gFinally { ([ref]$var).Value = $true } `
         | Complete-gPromise
@@ -46,8 +43,7 @@ Describe "Use-gFinally" {
     It "executed_both" {
         $var = $false
 
-        { } `
-        | Start-gPromise `
+        Start-gPromise { } `
         | Use-gThen { } `
         | Use-gCatch { } `
         | Use-gFinally { ([ref]$var).Value = $true } `

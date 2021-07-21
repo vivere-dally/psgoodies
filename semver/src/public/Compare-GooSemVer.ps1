@@ -1,4 +1,4 @@
-function Compare-GooSemVer {
+function Compare-gSemVer {
     <#
     .SYNOPSIS
         Compare two SemVer strings.
@@ -12,17 +12,17 @@ function Compare-GooSemVer {
         Specifies a Version used as a reference for comparison.
     .EXAMPLE
         --- Example 1 Error case ---
-        PS C:\> Compare-GooSemVer -DifferenceVersion 'a.b.c.' -ReferenceVersion '1.2.3'
+        PS C:\> Compare-gSemVer -DifferenceVersion 'a.b.c.' -ReferenceVersion '1.2.3'
         The value a.b.c. is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid comparisons ---
-        PS C:\> Compare-GooSemVer -DifferenceVersion '1.2.3' -ReferenceVersion '1.2.3'
+        PS C:\> Compare-gSemVer -DifferenceVersion '1.2.3' -ReferenceVersion '1.2.3'
 
         ==
-        PS C:\> Compare-GooSemVer -DifferenceVersion '1.2.4' -ReferenceVersion '1.2.3'
+        PS C:\> Compare-gSemVer -DifferenceVersion '1.2.4' -ReferenceVersion '1.2.3'
 
         >
-        PS C:\> @('1.0.0', '1.1.1-alpha', '2.0.0', '1.2.2', '1.2.3-alpha') | Compare-GooSemVer -ReferenceVersion '1.2.3'
+        PS C:\> @('1.0.0', '1.1.1-alpha', '2.0.0', '1.2.2', '1.2.3-alpha') | Compare-gSemVer -ReferenceVersion '1.2.3'
 
         <
         <
@@ -44,7 +44,7 @@ function Compare-GooSemVer {
         Naming inspiration was drawn from there.
 
         The ReferenceVersion can accept only one value, where DifferenceVersion can take values from the pipeline.
-        `@($a, $b, $c) | Compare-GooSemVer d` can be read as comparing a, b and c to d. d is the reference.
+        `@($a, $b, $c) | Compare-gSemVer d` can be read as comparing a, b and c to d. d is the reference.
     #>
     [CmdletBinding()]
     [OutputType([string])]

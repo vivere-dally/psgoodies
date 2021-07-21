@@ -23,12 +23,12 @@ Describe "Start-gPromise" {
     }
 
     It "writeError" {
-        $promise = { Write-Error 123 } | Start-gPromise
+        $promise = Start-gPromise { Write-Error 123 }
         { $promise | Complete-gPromise } | Should -Throw
     }
 
     It "throw" {
-        $promise = { throw 123 } | Start-gPromise
+        $promise = Start-gPromise { throw 123 }
         { $promise | Complete-gPromise } | Should -Throw
     }
 }

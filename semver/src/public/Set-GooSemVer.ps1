@@ -1,4 +1,4 @@
-function Set-GooSemVer {
+function Set-gSemVer {
     <#
     .SYNOPSIS
         Set identifiers in a SemVer string.
@@ -16,22 +16,22 @@ function Set-GooSemVer {
         Specifies the new value
     .EXAMPLE
         --- Example 1 Error cases ---
-        PS C:\> Set-GooSemVer -Version '1.-2.3' -Identifier Buildmetadata -Value 'build'
+        PS C:\> Set-gSemVer -Version '1.-2.3' -Identifier Buildmetadata -Value 'build'
         
         The value 1.-2.3 is not following the SemVer guidelines.
-        PS C:\> Set-GooSemVer -Version '1.2.3' -Identifier Buildmetadata -Value '==ahasda'
+        PS C:\> Set-gSemVer -Version '1.2.3' -Identifier Buildmetadata -Value '==ahasda'
 
         The resulted Version is in an invalid state 1.2.3+==ahasda. The value ==ahasda is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid sets ---
-        PS C:\> Set-GooSemVer -Version '1.2.3' -Identifier Buildmetadata -Value 'build'
+        PS C:\> Set-gSemVer -Version '1.2.3' -Identifier Buildmetadata -Value 'build'
         
         1.2.3+build
-        PS C:\> Set-GooSemVer -Version '1.2.3' -Identifier Major -Value '5'
+        PS C:\> Set-gSemVer -Version '1.2.3' -Identifier Major -Value '5'
 
         5.2.3
 
-        PS C:\> @('1.2.3', '3.3.3-alpha', '1.0.0+build') | Set-GooSemVer -Identifier Minor -Value '0'
+        PS C:\> @('1.2.3', '3.3.3-alpha', '1.0.0+build') | Set-gSemVer -Identifier Minor -Value '0'
 
         1.0.3
         3.0.3-alpha
@@ -74,7 +74,7 @@ function Set-GooSemVer {
         $versionTable.Remove(0)
 
         $versionTable[$Identifier] = $Value
-        $newVersion = $versionTable | ConvertTo-GooSemVer
+        $newVersion = $versionTable | ConvertTo-gSemVer
         if (-not ($newVersion -match $Script:GooSemVer.Rex)) {
             throw $Script:GooSemVer.InvalidResultingVersionFormatMessage -f @($newVersion, $Value)
         }

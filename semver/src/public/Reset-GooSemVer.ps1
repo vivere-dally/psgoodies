@@ -1,4 +1,4 @@
-function Reset-GooSemVer {
+function Reset-gSemVer {
     <#
     .SYNOPSIS
         Reset identifiers in a SemVer string.
@@ -13,30 +13,30 @@ function Reset-GooSemVer {
         Valid choices: Major, Minor, Patch, Prerelease, Buildmetadata
     .EXAMPLE
         --- Example 1 Error cases ---
-        PS C:\> '1.2.-3' | Reset-GooSemVer Major
+        PS C:\> '1.2.-3' | Reset-gSemVer Major
         
         The value 1.2.-3 is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Valid resets ---
-        PS C:\> '1.2.3' | Reset-GooSemVer Major
+        PS C:\> '1.2.3' | Reset-gSemVer Major
         
         0.2.3
-        PS C:\> '1.2.3' | Reset-GooSemVer Minor
+        PS C:\> '1.2.3' | Reset-gSemVer Minor
 
         1.0.3
-        PS C:\> '1.2.3' | Reset-GooSemVer Patch
+        PS C:\> '1.2.3' | Reset-gSemVer Patch
 
         1.2.0
-        PS C:\> '1.2.3-alpha' | Reset-GooSemVer Prerelease
+        PS C:\> '1.2.3-alpha' | Reset-gSemVer Prerelease
 
         1.2.3
-        PS C:\> '1.2.3-alpha.beta' | Reset-GooSemVer Prerelease
+        PS C:\> '1.2.3-alpha.beta' | Reset-gSemVer Prerelease
 
         1.2.3-alpha
-        PS C:\> '1.2.3-alpha.beta.1' | Reset-GooSemVer Prerelease
+        PS C:\> '1.2.3-alpha.beta.1' | Reset-gSemVer Prerelease
 
         1.2.3-alpha.beta
-        PS C:\> '1.2.3-alpha.beta.1' | Reset-GooSemVer Prerelease | Reset-GooSemVer Prerelease | Reset-GooSemVer Prerelease
+        PS C:\> '1.2.3-alpha.beta.1' | Reset-gSemVer Prerelease | Reset-gSemVer Prerelease | Reset-gSemVer Prerelease
 
         1.2.3
     .INPUTS
@@ -76,7 +76,7 @@ function Reset-GooSemVer {
 
         if ($Identifier -in @('Major', 'Minor', 'Patch')) {
             $versionTable[$Identifier] = 0
-            return $versionTable | ConvertTo-GooSemVer
+            return $versionTable | ConvertTo-gSemVer
         }
 
         $value = $versionTable[$Identifier].Split('.')
@@ -90,6 +90,6 @@ function Reset-GooSemVer {
             $versionTable[$Identifier] = $value -join '.'
         }
 
-        return $versionTable | ConvertTo-GooSemVer
+        return $versionTable | ConvertTo-gSemVer
     }
 }

@@ -1,5 +1,5 @@
 
-function ConvertTo-GooFlattenHashtable {
+function ConvertTo-gFlattenHashtable {
     [CmdletBinding()]
     [OutputType([hashtable])]
     param (
@@ -25,7 +25,7 @@ function ConvertTo-GooFlattenHashtable {
     }
 
     process {
-        $ht = $InputObject | ConvertTo-GooHashtable -Depth $Depth
+        $ht = $InputObject | ConvertTo-gHashtable -Depth $Depth
         $q.Enqueue([__Item]::new('', $ht))
         $root = @{}
         while (0 -lt $q.Count) {

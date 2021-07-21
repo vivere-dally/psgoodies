@@ -34,7 +34,7 @@ namespace PSGoodies.Async
 
     protected override void ProcessRecord()
     {
-      WriteObject(new Promise(this.Resolve()));
+      WriteObject(new Promise(Resolve()));
     }
 
     private async Task<System.Collections.ObjectModel.Collection<PSObject>> Resolve()

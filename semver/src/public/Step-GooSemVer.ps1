@@ -1,4 +1,4 @@
-function Step-GooSemVer {
+function Step-gSemVer {
     <#
     .SYNOPSIS
         Increment a certain identifier from a SemVer string.
@@ -14,11 +14,11 @@ function Step-GooSemVer {
         Valid choices: Major, Minor, Patch, Prerelease, Buildmetadata
     .EXAMPLE
         --- Example 1 Error case ---
-        PS C:\> Step-GooSemVer -Version '0.1.1-alpha++build' -Identifier Major
+        PS C:\> Step-gSemVer -Version '0.1.1-alpha++build' -Identifier Major
         The value 0.1.1-alpha++build is not following the SemVer guidelines.
     .EXAMPLE
         --- Example 2 Major ---
-        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Step-GooSemVer -Identifier Major
+        PS C:\> @('0.0.0', '0.0.1', '0.1.0', '1.0.0', '0.1.1-alpha', '0.1.1+build', '0.1.1-alpha+build') | Step-gSemVer -Identifier Major
 
         1.0.0
         1.0.0
@@ -29,24 +29,24 @@ function Step-GooSemVer {
         1.0.0
     .EXAMPLE
         --- Example 3 Minor ---
-        PS C:\> Step-GooSemVer -Version '1.2.3-alpha' Minor
+        PS C:\> Step-gSemVer -Version '1.2.3-alpha' Minor
 
         1.3.0
     .EXAMPLE
         --- Example 4 Patch ---
-        PS C:\> Step-GooSemVer -Version '1.2.3-alpha' Patch
+        PS C:\> Step-gSemVer -Version '1.2.3-alpha' Patch
 
         1.2.4
-        PS C:\> '1.2.3' | Step-GooSemVer
+        PS C:\> '1.2.3' | Step-gSemVer
 
         1.2.4
         # Patch is the default identifier
     .EXAMPLE
         --- Example 5 Prerelease ---
-        PS C:\> Step-GooSemVer -Version '1.2.3-alpha' Prerelease
+        PS C:\> Step-gSemVer -Version '1.2.3-alpha' Prerelease
 
         1.2.3-alpha.1
-        PS C:\> Step-GooSemVer -Version '1.2.3-alpha.1' Prerelease
+        PS C:\> Step-gSemVer -Version '1.2.3-alpha.1' Prerelease
 
         1.2.3-alpha.2
     .INPUTS
@@ -96,7 +96,7 @@ function Step-GooSemVer {
             [int] $value = $versionTable[$Identifier]
             $value++
             $versionTable[$Identifier] = $value
-            return $versionTable | ConvertTo-GooSemVer
+            return $versionTable | ConvertTo-gSemVer
         }
 
         $value = $versionTable[$Identifier].Split('.')
@@ -112,6 +112,6 @@ function Step-GooSemVer {
         }
 
         $versionTable[$Identifier] = $value -join '.'
-        return $versionTable | ConvertTo-GooSemVer
+        return $versionTable | ConvertTo-gSemVer
     }
 }

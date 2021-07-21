@@ -9,16 +9,14 @@ AfterAll {
 
 Describe "Use-gThen" {
     It "executed" {
-        {} `
-        | Start-gPromise `
+        Start-gPromise { } `
         | Use-gThen { $true } `
         | Complete-gPromise `
         | Should -Be $true
     }
 
     It "not_executed" {
-        { throw; } `
-        | Start-gPromise `
+        Start-gPromise { throw; } `
         | Use-gThen { $false } `
         | Use-gCatch { $true } `
         | Complete-gPromise `
@@ -26,8 +24,7 @@ Describe "Use-gThen" {
     }
 
     It "receive_params" {
-        { 1, 2, 3 } `
-        | Start-gPromise `
+        Start-gPromise { 1, 2, 3 } `
         | Use-gThen {
             param($a, $b, $c)
 
@@ -39,8 +36,7 @@ Describe "Use-gThen" {
     }
 
     It "propagate_params" {
-        { 1, 2, 3 } `
-        | Start-gPromise `
+        Start-gPromise { 1, 2, 3 } `
         | Use-gThen {
             param($a, $b, $c)
 

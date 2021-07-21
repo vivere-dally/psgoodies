@@ -1,4 +1,4 @@
-function Use-GooRetryHandler {
+function Use-gRetryHandler {
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
     param (

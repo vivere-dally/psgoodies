@@ -9,24 +9,21 @@ AfterAll {
 
 Describe "Use-gCatch" {
     It "executed" {
-        { throw 123; } `
-        | Start-gPromise `
+        Start-gPromise { throw 123; } `
         | Use-gCatch { return $true } `
         | Complete-gPromise `
         | Should -BeTrue
     }
 
     It "not_executed" {
-        { return $true; } `
-        | Start-gPromise `
+        Start-gPromise { return $true; } `
         | Use-gCatch { return $false } `
         | Complete-gPromise `
         | Should -BeTrue
     }
 
     It "receive_error_from_writeError" {
-        { Write-Error 'myError' } `
-        | Start-gPromise `
+        Start-gPromise { Write-Error 'myError' } `
         | Use-gCatch {
             param($err)
 
@@ -37,8 +34,7 @@ Describe "Use-gCatch" {
     }
 
     It "receive_error_from_throw" {
-        { throw 'myError' } `
-        | Start-gPromise `
+        Start-gPromise { throw 'myError' } `
         | Use-gCatch {
             param($err)
 
