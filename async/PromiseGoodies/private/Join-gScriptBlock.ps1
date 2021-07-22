@@ -1,4 +1,21 @@
 function Join-gScriptBlock {
+    <#
+    .SYNOPSIS
+        Short description
+    .DESCRIPTION
+        Long description
+    .EXAMPLE
+        PS C:\> <example usage>
+        Explanation of what the example does
+    .INPUTS
+        Inputs (if any)
+    .OUTPUTS
+        Output (if any)
+    .NOTES
+        $argumentList = @(1, 2, 3)
+        $jointSB.Invoke($argumentList)
+        & $jointSB @al
+    #>
     [CmdletBinding()]
     [OutputType([scriptblock])]
     param (
@@ -12,8 +29,10 @@ function Join-gScriptBlock {
     )
 
     $jointScriptBlock = @"
-[System.Object[]]`$argumentList = {[psb]}.Invoke(`$args)
-[System.Object[]]`$result = {[csb]}.Invoke(`$argumentList)
+`$argumentList = @({[psb]}.Invoke(`$args))
+
+`$result = @({[csb]}.Invoke(`$argumentList))
+
 return `$result
 "@
 
