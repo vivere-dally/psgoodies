@@ -1,6 +1,6 @@
-function Use-gThen {
+function Use-gCatch {
     [CmdletBinding(DefaultParameterSetName = 'Pipeline')]
-    [Alias('Use-Then', 'Then', 'gThen')]
+    [Alias('Use-Catch', 'Catch', 'gCatch')]
     [OutputType([PSGoodies.Async.Model.Promise])]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, ParameterSetName = 'Pipeline')]
@@ -27,16 +27,20 @@ function Use-gThen {
             param($Promise)
 
             $Promise | Wait-Job | Out-Null
-            if ($Promise.State -ne 'Completed') {
+            if ($Promise.State -eq 'Completed') {
                 return $Promise
             }
 
-            $output = $Promise.Output.ReadAll()
+            $errors = $Promise.Error.ReadAll()
+            if (-not ($errors.Count -gt 0)) {
+                $errors = $Promise.JobStateInfo.Reason
+            }
+
             if ($Promise.HasMoreData) {
                 $Promise | Receive-Job | Out-Null
             }
 
-            return $output
+            return $errors
         }
 
         $jointScriptBlock = Join-gScriptBlock $parentScriptBlock $ScriptBlock

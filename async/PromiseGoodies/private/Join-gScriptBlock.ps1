@@ -31,6 +31,10 @@ function Join-gScriptBlock {
     $jointScriptBlock = @"
 `$argumentList = @({[psb]}.Invoke(`$args))
 
+if (`$argumentList.Count -eq 1 -and `$argumentList[0] -is [PSGoodies.Async.Model.Promise]) {
+    return `$argumentList[0]
+}
+
 `$result = @({[csb]}.Invoke(`$argumentList))
 
 return `$result

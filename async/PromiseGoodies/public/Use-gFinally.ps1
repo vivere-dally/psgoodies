@@ -1,7 +1,5 @@
-function Use-gThen {
-    [CmdletBinding(DefaultParameterSetName = 'Pipeline')]
-    [Alias('Use-Then', 'Then', 'gThen')]
-    [OutputType([PSGoodies.Async.Model.Promise])]
+function Use-gFinally {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, ParameterSetName = 'Pipeline')]
         [Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Position')]
@@ -27,19 +25,11 @@ function Use-gThen {
             param($Promise)
 
             $Promise | Wait-Job | Out-Null
-            if ($Promise.State -ne 'Completed') {
-                return $Promise
-            }
 
-            $output = $Promise.Output.ReadAll()
-            if ($Promise.HasMoreData) {
-                $Promise | Receive-Job | Out-Null
-            }
-
-            return $output
+            return $Promise
         }
 
-        $jointScriptBlock = Join-gScriptBlock $parentScriptBlock $ScriptBlock
+        $jointScriptBlock = Join-gFinallyScriptBlock $parentScriptBlock $ScriptBlock
         $jointScriptBlock | Start-gInternalPromise -CommandEntries $commandEntries -Usings $usings -ArgumentList $Promise
     }
 }
