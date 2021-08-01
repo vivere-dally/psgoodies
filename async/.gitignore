@@ -1,5 +1,3 @@
 bin
 obj
-output/PromiseGoodies/*
-!output/PromiseGoodies/*psd1
-!output/PromiseGoodies/*psm1
+output

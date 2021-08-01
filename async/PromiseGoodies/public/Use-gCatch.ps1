@@ -24,20 +24,18 @@ function Use-gCatch {
 
     process {
         $parentScriptBlock = {
-            param($Promise)
+            param($Promise, [ref] $ShouldSkip)
 
             $Promise | Wait-Job | Out-Null
-            if ($Promise.State -eq 'Completed') {
-                return $Promise
+            if ($Promise.State -eq 'Completed' -and $Promise.Error.Count -eq 0) {
+                $ShouldSkip.Value = $true
+                $output = $Promise.Output.ReadAll()
+                return $output
             }
 
             $errors = $Promise.Error.ReadAll()
-            if (-not ($errors.Count -gt 0)) {
-                $errors = $Promise.JobStateInfo.Reason
-            }
-
-            if ($Promise.HasMoreData) {
-                $Promise | Receive-Job | Out-Null
+            if ($Promise.State -eq 'Failed') {
+                $errors.Add($Promise.JobStateInfo.Reason.ErrorRecord)
             }
 
             return $errors

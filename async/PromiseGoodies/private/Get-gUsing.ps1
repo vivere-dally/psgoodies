@@ -27,6 +27,6 @@ function Get-gUsing {
             }
         }
 
-        return $usings
+        return , $usings
     }
 }

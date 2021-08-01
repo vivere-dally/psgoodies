@@ -21,15 +21,32 @@ function Use-gFinally {
     }
 
     process {
-        $parentScriptBlock = {
-            param($Promise)
+        $jointScriptBlock = @"
+param(`$Promise)
 
-            $Promise | Wait-Job | Out-Null
+`$Promise | Wait-Job | Out-Null
 
-            return $Promise
-        }
+Invoke-Command -ScriptBlock { [csb] } | Out-Null
 
-        $jointScriptBlock = Join-gFinallyScriptBlock $parentScriptBlock $ScriptBlock
+if (`$Promise.State -eq 'Completed' -and `$Promise.Error.Count -eq 0) {
+    `$output = `$Promise.Output.ReadAll()
+    return `$output
+}
+
+if (`$Promise.Error.Count -gt 0) {
+    `$Promise.Error.ReadAll() | Write-Error
+}
+
+if (`$Promise.State -eq 'Failed') {
+    if (`$Promise.JobStateInfo.Reason.WasThrownFromThrowStatement) {
+        throw "Exception: `$(`$Promise.JobStateInfo.Reason.ErrorRecord.ToString())"
+    }
+
+    `$Promise.JobStateInfo.Reason.ErrorRecord | Write-Error
+}
+"@.Replace('[csb]', $ScriptBlock.ToString())
+
+        $jointScriptBlock = [scriptblock]::Create($jointScriptBlock)
         $jointScriptBlock | Start-gInternalPromise -CommandEntries $commandEntries -Usings $usings -ArgumentList $Promise
     }
 }

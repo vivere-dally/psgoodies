@@ -24,18 +24,28 @@ function Use-gThen {
 
     process {
         $parentScriptBlock = {
-            param($Promise)
+            param($Promise, [ref] $ShouldSkip)
 
             $Promise | Wait-Job | Out-Null
-            if ($Promise.State -ne 'Completed') {
-                return $Promise
+            if ($Promise.Error.Count -gt 0) {
+                $ShouldSkip.Value =  $true
+                $Promise.Error.ReadAll() | Write-Error
+            }
+
+            if ($Promise.State -eq 'Failed') {
+                $ShouldSkip.Value =  $true
+                if ($Promise.JobStateInfo.Reason.WasThrownFromThrowStatement) {
+                    throw "Exception: $($Promise.JobStateInfo.Reason.ErrorRecord.ToString())"
+                }
+
+                $Promise.JobStateInfo.Reason.ErrorRecord | Write-Error
+            }
+
+            if ($ShouldSkip.Value) {
+                return
             }
 
             $output = $Promise.Output.ReadAll()
-            if ($Promise.HasMoreData) {
-                $Promise | Receive-Job | Out-Null
-            }
-
             return $output
         }
 
