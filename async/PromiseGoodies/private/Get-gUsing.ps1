@@ -4,7 +4,11 @@ function Get-gUsing {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
         [scriptblock]
-        $ScriptBlock
+        $ScriptBlock,
+
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.PSCmdlet]
+        $ParentPSCmdlet
     )
 
     process {
@@ -16,14 +20,14 @@ function Get-gUsing {
                 throw "Could not determine the 'Using' expression $($usingAst.Extent.Text)"
             }
 
-            $var = Get-Variable -Name $varAst.VariablePath.UserPath -ErrorAction SilentlyContinue
-            if (-not $var) {
+            $varValue = $ParentPSCmdlet.GetVariableValue($varAst.VariablePath.UserPath)
+            if (-not $varValue) {
                 throw "Could not determine the 'Using' variable $($usingAst.Extent.Text)"
             }
 
             $key = [System.Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($usingAst.ToString().ToLowerInvariant().ToCharArray()))
-            if (-not $usings.ContainsKey($var.Name)) {
-                $usings[$key] = $var.Value
+            if (-not $usings.ContainsKey($key)) {
+                $usings[$key] = $varValue
             }
         }
 

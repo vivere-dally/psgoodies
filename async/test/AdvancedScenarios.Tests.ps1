@@ -1,25 +1,26 @@
-$prevErrorActionPreference = $ErrorActionPreference
 BeforeAll {
     $ErrorActionPreference = 'Stop'
-}
-
-AfterAll {
-    $ErrorActionPreference = $prevErrorActionPreference
+    Import-Module "$PSScriptRoot/../output/PromiseGoodies.psd1"
 }
 
 Describe "AdvancedScenarios" {
-    It "1" {
-        Start-gPromise { 1 } `
-        | Use-gThen { param($a) $a++; $a } `
-        | Use-gThen { param($b) $b++; $b } `
-        | Use-gThen { param($c) throw $c } `
-        | Use-gCatch { param($d) $e = [int]::Parse($d.Message); $e++; $e } `
-        | Use-gThen { param($f) $f++; $f } `
+
+    It "using" {
+        $a = 1; $b = 2; $c = 3; $d = 'str';
+        Start-gPromise { $using:a } `
+        | Use-gThen { param($a) $a, $using:b } `
+        | Use-gThen { param($a, $b) throw $a, $b, $using:c } `
+        | Use-gCatch { param($err) "$err $using:d" }
         | Complete-gPromise `
-        | Should -Be 5
+        | Should -Be '1 2 3 str'
     }
 
-    It "2" -Skip {
+    It "web_request" {
+        if (-not (Test-NetConnection).PingSucceeded) {
+            $true | Should -BeTrue
+            return
+        }
+
         Start-gPromise { Invoke-WebRequest -Uri "https://randomuser.me/api/" } `
         | Use-gThen { param($response) $response | Select-Object -ExpandProperty Content | ConvertFrom-Json } `
         | Use-gThen { param($content) $content.results.Count }

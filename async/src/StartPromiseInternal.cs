@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
-using PSGoodies.Async.Model;
+using PSGoodies.PromiseGoodies.Model;
 
-namespace PSGoodies.Async.Cmdlets
+namespace PSGoodies.PromiseGoodies.Cmdlets
 {
   [Cmdlet(VerbsLifecycle.Start, "gInternalPromise")]
   [OutputType(typeof(Promise))]
@@ -24,9 +24,13 @@ namespace PSGoodies.Async.Cmdlets
     [AllowEmptyCollection()]
     public PSObject[] ArgumentList { get; set; } = new PSObject[0];
 
+    [Parameter()]
+    [AllowNull()]
+    public Promise ChildPromise { get; set; } = null;
+
     protected override void ProcessRecord()
     {
-      var promise = new Promise(this.ScriptBlock, this.CommandEntries, this.Usings, this.ArgumentList, this);
+      var promise = new Promise(this.ScriptBlock, this.CommandEntries, this.Usings, this.ArgumentList, this, ChildPromise);
       promise.StartJob();
       WriteObject(promise);
     }

@@ -1,23 +1,19 @@
-$prevErrorActionPreference = $ErrorActionPreference
 BeforeAll {
     $ErrorActionPreference = 'Stop'
-}
-
-AfterAll {
-    $ErrorActionPreference = $prevErrorActionPreference
+    Import-Module "$PSScriptRoot/../output/PromiseGoodies.psd1"
 }
 
 Describe "Use-gCatch" {
     It "executed" {
-        Start-gPromise { throw 123; } `
-        | Use-gCatch { return $true } `
+        Start-gPromise { throw } `
+        | Use-gCatch { $true } `
         | Complete-gPromise `
         | Should -BeTrue
     }
 
     It "not_executed" {
-        Start-gPromise { return $true; } `
-        | Use-gCatch { return $false } `
+        Start-gPromise { $true } `
+        | Use-gCatch { $false } `
         | Complete-gPromise `
         | Should -BeTrue
     }
@@ -27,7 +23,7 @@ Describe "Use-gCatch" {
         | Use-gCatch {
             param($err)
 
-            return $err.Message
+            $err
         } `
         | Complete-gPromise `
         | Should -BeLikeExactly '*myError*'
@@ -38,7 +34,7 @@ Describe "Use-gCatch" {
         | Use-gCatch {
             param($err)
 
-            $err.Message
+            $err
         } `
         | Complete-gPromise `
         | Should -BeExactly 'myError'

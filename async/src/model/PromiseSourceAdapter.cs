@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 
-namespace PSGoodies.Async.Model
+namespace PSGoodies.PromiseGoodies.Model
 {
   public class PromiseSourceAdapter : JobSourceAdapter
   {

@@ -13,4 +13,4 @@ foreach ($function in ($publicFunctions + $privateFunctions)) {
     }
 }
 
-Export-ModuleMember -Function $publicFunctions.BaseName
+Export-ModuleMember -Function $publicFunctions.BaseName -Alias *

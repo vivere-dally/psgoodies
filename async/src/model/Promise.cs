@@ -4,25 +4,26 @@ using System.ComponentModel;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 
-namespace PSGoodies.Async.Model
+namespace PSGoodies.PromiseGoodies.Model
 {
   public class Promise : Job2, IDisposable
   {
     private const string VERBATIM_ARGUMENT = "--%";
 
-    #region Constructor Fields
+    #region Fields
     private ScriptBlock __scriptBlock;
     private PSObject[] __argumentList;
     private PSCmdlet __psCmdlet;
     private ICollection<SessionStateCommandEntry> __commandEntries;
     private Dictionary<string, object> __usings;
-    #endregion
-
-    #region Private Fields
     private PSDataCollection<object> __input;
     private PSDataCollection<PSObject> __output;
     private Runspace __runspace;
     private PowerShell __powershell;
+    #endregion
+
+    #region Properties
+    public Promise ChildPromise { get; private set; }
     #endregion
 
     private Promise() { }
@@ -32,7 +33,8 @@ namespace PSGoodies.Async.Model
       ICollection<SessionStateCommandEntry> commandEntries,
       Dictionary<string, object> usings,
       PSObject[] argumentList,
-      PSCmdlet psCmdlet)
+      PSCmdlet psCmdlet,
+      Promise childPromise = null)
       : base(scriptBlock.ToString(), "Promise")
     {
       this.__scriptBlock = scriptBlock;
@@ -41,6 +43,8 @@ namespace PSGoodies.Async.Model
       this.__argumentList = argumentList;
       this.__psCmdlet = psCmdlet;
       this.__Initialize();
+
+      this.ChildPromise = childPromise;
     }
 
     #region Private Methods

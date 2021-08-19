@@ -1,11 +1,36 @@
 function Use-gCatch {
+    <#
+    .SYNOPSIS
+        Extend an unsuccessful Promise.
+    .DESCRIPTION
+        The Use-gCatch cmdlet starts a PowerShell background job on the local computer.
+        It executes the ScriptBlock only if the specified Promise finished unsuccessfully.
+    .EXAMPLE
+        PS C:\> Start-gPromise { Write-Host 'hello' } | Use-gCatch { Write-Host 'world' }
+
+        hello
+        PS C:\> Start-gPromise { Write-Host 'hello'; throw } | Use-gCatch { Write-Host 'world' }
+
+        hello
+        world
+    .EXAMPLE
+        PS C:\> Start-gPromise { throw 'err' } | Use-gCatch { param($err) Write-Host $err }
+
+        err
+    .INPUTS
+        PSGoodies.PromiseGoodies.Model.Promise
+    .OUTPUTS
+        PSGoodies.PromiseGoodies.Model.Promise
+    .NOTES
+        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Pipeline')]
     [Alias('Use-Catch', 'Catch', 'gCatch')]
-    [OutputType([PSGoodies.Async.Model.Promise])]
+    [OutputType([PSGoodies.PromiseGoodies.Model.Promise])]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, ParameterSetName = 'Pipeline')]
         [Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Position')]
-        [PSGoodies.Async.Model.Promise]
+        [PSGoodies.PromiseGoodies.Model.Promise]
         $Promise,
 
         [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'Pipeline')]
@@ -19,7 +44,7 @@ function Use-gCatch {
         $commandEntries = $ScriptBlock | Get-gCommandEntry
 
         # Load $using:* values
-        $usings = $ScriptBlock | Get-gUsing
+        $usings = $ScriptBlock | Get-gUsing -ParentPSCmdlet $PSCmdlet
     }
 
     process {
@@ -42,6 +67,6 @@ function Use-gCatch {
         }
 
         $jointScriptBlock = Join-gScriptBlock $parentScriptBlock $ScriptBlock
-        $jointScriptBlock | Start-gInternalPromise -CommandEntries $commandEntries -Usings $usings -ArgumentList $Promise
+        $jointScriptBlock | Start-gInternalPromise -CommandEntries $commandEntries -Usings $usings -ArgumentList $Promise -ChildPromise $Promise
     }
 }

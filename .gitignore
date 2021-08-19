@@ -1,3 +1,4 @@
 .vscode
 */**/testResults.xml
 */**/coverage.xml
+*/**/TestExplorerResults.xml

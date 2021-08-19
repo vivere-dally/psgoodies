@@ -1,15 +1,11 @@
-$prevErrorActionPreference = $ErrorActionPreference
 BeforeAll {
     $ErrorActionPreference = 'Stop'
-}
-
-AfterAll {
-    $ErrorActionPreference = $prevErrorActionPreference
+    Import-Module "$PSScriptRoot/../output/PromiseGoodies.psd1"
 }
 
 Describe "Use-gThen" {
     It "executed" {
-        Start-gPromise { } `
+        Start-gPromise { $false } `
         | Use-gThen { $true } `
         | Complete-gPromise `
         | Should -Be $true
