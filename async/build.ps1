@@ -1,13 +1,12 @@
 $ErrorActionPreference = 'Stop'
-$moduleName = 'PromiseGoodies'
 
-New-Item -Path "$PSScriptRoot\output" -ItemType Directory -Force | Out-Null
-& 'dotnet' @('build',  "$PSScriptRoot\src", '-o', "$PSScriptRoot\output\bin")
+New-Item -Path "$PSScriptRoot\dist" -ItemType Directory -Force | Out-Null
+& 'dotnet' @('build',  "$PSScriptRoot\src", '-c', 'Release', '-o', "$PSScriptRoot\dist\bin")
 if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
     Write-Error 'dotnet build error'
 }
 
-Copy-Item -Path "$PSScriptRoot\$moduleName\*" -Destination "$PSScriptRoot\output" -Recurse -Force
-Import-Module "$PSScriptRoot\output\$moduleName.psd1" -Global -Force
+Copy-Item -Path "$PSScriptRoot\src\powershell\*" -Destination "$PSScriptRoot\dist" -Recurse -Force
+Import-Module "$PSScriptRoot\dist\PromiseGoodies.psd1" -Global -Force
 
 & "$PSScriptRoot\..\test.ps1" -Path "$PSScriptRoot\test"

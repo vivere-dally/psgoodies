@@ -1,6 +1,6 @@
 BeforeAll {
     $ErrorActionPreference = 'Stop'
-    Import-Module "$PSScriptRoot/../output/PromiseGoodies.psd1"
+    Import-Module "$PSScriptRoot/../dist/PromiseGoodies.psd1"
 }
 
 Describe "Start-gPromise" {
