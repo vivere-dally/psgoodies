@@ -14,7 +14,12 @@ function Get-gCommandEntryHelper {
         [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
         [System.Collections.Generic.HashSet[System.String]]
-        $IgnoreCommandEntries
+        $IgnoreCommandEntries,
+
+        [Parameter()]
+        [AllowNull()]
+        [psmoduleinfo]
+        $ParentModuleInfo
     )
 
     process {
@@ -30,6 +35,10 @@ function Get-gCommandEntryHelper {
             }
 
             $commandInfo = Get-Command -Name $commandName -ErrorAction SilentlyContinue
+            if (-not $commandInfo -and $ParentModuleInfo) {
+                $commandInfo = & $ParentModuleInfo { Get-Command -Name $args[0] -ErrorAction SilentlyContinue } $commandName
+            }
+
             if (-not $commandInfo) {
                 throw "Could not find command $($commandName)"
             }
@@ -41,7 +50,7 @@ function Get-gCommandEntryHelper {
 
             $CommandEntries[$commandName] = $commandInfo | ConvertTo-gCommandEntry
             if ($commandInfo.ScriptBlock) {
-                $commandInfo.ScriptBlock | Get-gCommandEntryHelper -CommandEntries $CommandEntries -IgnoreCommandEntries $IgnoreCommandEntries
+                $commandInfo.ScriptBlock | Get-gCommandEntryHelper -CommandEntries $CommandEntries -IgnoreCommandEntries $IgnoreCommandEntries -ParentModuleInfo $commandInfo.Module
             }
         }
     }

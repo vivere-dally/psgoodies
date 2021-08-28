@@ -1,6 +1,28 @@
 BeforeAll {
     $ErrorActionPreference = 'Stop'
     Import-Module "$PSScriptRoot/../dist/PromiseGoodies.psd1"
+
+    New-Module -ScriptBlock {
+        function privateFoo {
+            [CmdletBinding()]
+            [Alias('privf')]
+            param([int] $number)
+
+            return $number * $number
+        }
+
+        function publicFoo {
+            param([int] $number)
+
+            return (privateFoo -number $number) * (privf -number $number)
+        }
+
+        Export-ModuleMember -Function publicFoo
+    } -Name testFooModule | Import-Module -Force -Global
+}
+
+AfterAll {
+    Remove-Module testFooModule
 }
 
 Describe "AdvancedScenarios" {
@@ -24,8 +46,14 @@ Describe "AdvancedScenarios" {
         Start-gPromise { Invoke-WebRequest -Uri "https://randomuser.me/api/" } `
         | Use-gThen { param($response) $response | Select-Object -ExpandProperty Content | ConvertFrom-Json } `
         | Use-gThen { param($content) $content.results.Count } `
-        | Use-gCatch { 1 } `
         | Complete-gPromise `
         | Should -BeGreaterThan 0
+    }
+
+    It "working_with_private_function" {
+        Start-gPromise { publicFoo -number 2 } `
+        | Use-gThen { param($number) publicFoo -number $number } `
+        | Complete-gPromise `
+        | Should -Be 65536
     }
 }
