@@ -12,7 +12,7 @@
 RootModule = 'PromiseGoodies.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '0.1.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -30,7 +30,7 @@ CompanyName = 'vivere-dally'
 Copyright = '(c) vivere-dally. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Promise like behaviour in PowerShell'
+Description = 'Promise like behaviour in PowerShell. Please report issues and give feedback on github.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
@@ -101,13 +101,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @('vivere-dally', 'promise', 'async', 'await', 'psgoodies', 'goodies')
+        Tags = @('promise', 'async', 'await', 'job')
 
         # A URL to the license for this module.
         LicenseUri = 'https://github.com/vivere-dally/psgoodies/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/async'
+        ProjectUri = 'https://github.com/vivere-dally/psgoodies/tree/main/promise'
 
         # A URL to an icon representing this module.
         # IconUri = ''
@@ -116,7 +116,7 @@ PrivateData = @{
         # ReleaseNotes = ''
 
         # Prerelease string of this module
-        # Prerelease = ''
+        Prerelease = 'alpha'
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
         # RequireLicenseAcceptance = $false
@@ -135,4 +135,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
